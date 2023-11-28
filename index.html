@@ -6,10 +6,11 @@
     <title>AR QR Code App</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar.js">
+        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js">
 
 </head>
 <body>
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: true;">
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
         <a-marker preset="hiro" type="pattern" url="pattern-marker.patt">
             <!-- Aggiungi qui gli elementi della tua scena AR -->
             <a-entity gltf-model="url(./cube.glb)" scale="0.1 0.1 0.1"></a-entity>
