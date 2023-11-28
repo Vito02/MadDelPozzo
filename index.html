@@ -1,66 +1,50 @@
-<html>
-<head>
-<title>AR.js A-Frame Location-based</title>
-<script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-<script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex-location-only.js'></script>
-<script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js'></script>
-</head>
-<body>
-<a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false' renderer='antialias: true; alpha: true'>
-    <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
-    <a-entity material='color: red' geometry='primitive: box' gps-new-entity-place="latitude: <your-lat>; longitude: <your-loon>" scale="10 10 10"></a-entity>
-</a-scene>
-    <script>
-        window.onload = () => {
-    let downloaded = false;
+<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
 
-    const el = document.querySelector("[gps-new-camera]");
+<style>
+  .arjs-loader {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    el.addEventListener("gps-camera-update-position", async(e) => {
-        if(!downloaded) {
-            const west = e.detail.position.longitude - 0.05,
-                  east = e.detail.position.longitude + 0.05,
-                  south = e.detail.position.latitude - 0.05;
-                  north = e.detail.position.latitude + 0.05;
-            console.log(`${west} ${south} ${east} ${north}`);
-            const response = await fetch(`https://hikar.org/webapp/map?bbox=${west},${south},${east},${north}&layers=poi&outProj=4326`);
-            const pois = await response.json();
-            pois.features.forEach ( feature => {
-                const compoundEntity = document.createElement("a-entity");
-                compoundEntity.setAttribute('gps-new-entity-place', {
-                    latitude: feature.geometry.coordinates[1],
-                    longitude: feature.geometry.coordinates[0]
-                });
-                const box = document.createElement("a-box");
-                box.setAttribute("scale", {
-                    x: 20,
-                    y: 20,
-                    z: 20
-                });
-                box.setAttribute('material', { color: 'red' } );
-                box.setAttribute("position", {
-                    x : 0,
-                    y : 20,
-                    z: 0
-                } );
-                const text = document.createElement("a-text");
-                const textScale = 100;
-                text.setAttribute("look-at", "[gps-new-camera]");
-                text.setAttribute("scale", {
-                    x: textScale,
-                    y: textScale,
-                    z: textScale
-                });
-                text.setAttribute("value", feature.properties.name);
-                text.setAttribute("align", "center");
-                compoundEntity.appendChild(box);
-                compoundEntity.appendChild(text);
-                document.querySelector("a-scene").appendChild(compoundEntity);
-            });
-        }
-        downloaded = true;
-    });
-};
-    </script>
+  .arjs-loader div {
+    text-align: center;
+    font-size: 1.25em;
+    color: white;
+  }
+</style>
+
+<!-- rawgithack development URL -->
+<script src='https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js'></script>
+
+<body style='margin : 0px; overflow: hidden;'>
+   <!-- minimal loader shown until image descriptors are loaded -->
+  <div class="arjs-loader">
+    <div>Loading, please wait...</div>
+  </div>
+    <a-scene
+        vr-mode-ui="enabled: false;"
+        renderer="logarithmicDepthBuffer: true;"
+        embedded arjs='trackingMethod: best; sourceType: webcam; debugUIEnabled: false;'>
+
+        <!-- use rawgithack to retrieve the correct url for nft marker (see 'trex' below) -->
+        <a-nft
+            type='nft' url='https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/trex-image/trex'
+            smooth='true' smoothCount='10' smoothTolerance='0.01' smoothThreshold='5'>
+            <a-entity
+                gltf-model='https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf'
+                scale="5 5 5"
+                position="100 100 0"
+                >
+            </a-entity>
+        </a-nft>
+		<a-entity camera></a-entity>
+    </a-scene>
 </body>
-</html>
