@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe-master.min.js"></script>
 </head>
 <body>
-    <a-scene embedded arjs='sourceType: webcam; sourceWidth: 1280; sourceHeight: 960; displayWidth: 1280; displayHeight: 960;'>
+    <a-scene embedded arjs='sourceType: webcam'>
         <a-marker preset="hiro" type="pattern" url="./pattern-marker.patt">
             <!-- Aggiungi qui gli elementi della tua scena AR -->
             <a-entity gltf-model="url(./cubo.glb)" scale="0.1 0.1 0.1"></a-entity>
